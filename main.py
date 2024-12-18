@@ -27,7 +27,15 @@ def find_post(id):
             return p
 
 
+# Function to get index of a post by id
+def find_post_index(id):
+    for i, p in enumerate(my_posts):
+        if p['id'] == id:
+            return i
+
 # Root path
+
+
 @app.get("/")
 def root():
     return {"message": "Welcome to the API"}
@@ -83,3 +91,23 @@ def delete_post(id: int, response: Response):
     my_posts.remove(post)
 
     return Response(status_code=status.HTTP_204_NO_CONTENT)
+
+
+# Updating a post
+@app.put("/post/{id}")
+def update_post(id: int, post: Post):
+    index = find_post_index(id)
+
+    # if post is not found return a 404 response
+    if not index:
+        raise HTTPException(status_code=404, detail=f"Post with id {
+                            id} was not found")
+
+    # convert the post pydantic model as a dictionary
+    post_dict = post.model_dump()
+
+    # update the post
+    post_dict['id'] = id
+    my_posts[index] = post_dict
+
+    return {"data": post_dict}
