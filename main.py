@@ -1,6 +1,7 @@
 from typing import Optional
 from fastapi import FastAPI, Body
 from pydantic import BaseModel
+from random import randrange
 
 app = FastAPI()
 
@@ -31,9 +32,11 @@ def get_posts():
 @app.post("/post")
 def post(new_post: Post):
 
-    # automatic validating the request body
-    print(new_post)
-
-    # to print the new_post pydantic model as a dictionary
+    # to convert the new_post pydantic model as a dictionary
     # new_post.dict() method is deprecated
-    return {"data": new_post.model_dump()}
+    post_dict = new_post.model_dump()
+    post_dict['id'] = randrange(1000)
+
+    my_posts.append(post_dict)
+
+    return {"data": post_dict}
