@@ -69,3 +69,17 @@ def get_post(id: int, response: Response):
                             id} was not found")
 
     return {"data": post}
+
+
+# Deleting a post
+@app.delete("/post/{id}", status_code=status.HTTP_204_NO_CONTENT)
+def delete_post(id: int, response: Response):
+    post = find_post(id)
+
+    if not post:
+        raise HTTPException(status_code=404, detail=f"Post with id {
+                            id} was not found")
+
+    my_posts.remove(post)
+
+    return Response(status_code=status.HTTP_204_NO_CONTENT)
