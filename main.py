@@ -12,6 +12,12 @@ class Post(BaseModel):
     rating: Optional[int] = None
 
 
+my_posts = [{"title": "Post 1", "content": "This is the content of post 1", "id": 1,
+             "published": True, "rating": 5},
+            {"title": "Post 2", "content": "This is the content of post 2", "id": 2,
+             "published": True, "rating": 4}]
+
+
 @app.get("/")
 def root():
     return {"message": "Welcome to the API"}
@@ -19,7 +25,7 @@ def root():
 
 @app.get("/posts")
 def get_posts():
-    return {"data": "This is your posts."}
+    return {"data": my_posts}
 
 
 @app.post("/post")
